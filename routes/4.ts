@@ -29,6 +29,22 @@ function getFullyContainedPairs(linesArray: number[][]): number {
   return count;
 }
 
+function getOverlappingPairs(linesArray: number[][]): number {
+  let count = 0;
+
+  linesArray.forEach((pairs) => {
+    const [first, second] = pairs;
+
+    // get the items that are in both ranges
+    const overlapping = first.filter((item) => second.includes(item));
+
+    // if the overlapping array is empty, then there are no overlapping pairs
+    if (overlapping.length > 0) count++;
+  });
+
+  return count;
+}
+
 export const handler = async (
   _req: Request,
   _ctx: HandlerContext
@@ -40,10 +56,12 @@ export const handler = async (
   const linesArray: number[][] = getLinesArray(lines);
 
   const result = getFullyContainedPairs(linesArray);
+  const result2 = getOverlappingPairs(linesArray);
 
   return new Response(
     JSON.stringify({
       result,
+      result2,
     }),
     {
       status: 200,
